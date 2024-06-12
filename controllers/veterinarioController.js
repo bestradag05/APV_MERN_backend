@@ -38,7 +38,7 @@ const registrar = async (req, res) => {
 const perfil = (req, res) => {
 
     const { veterinario } = req;
-
+    console.log("Llega aqui ");
 
     res.json(veterinario);
 }
