@@ -16,16 +16,21 @@ conectarDB();
 const dominiosPermitidos = [process.env.FRONTEND_URL];
 
 const corsOptions = {
-    origin: function (origin, callback){
-        if(dominiosPermitidos.indexOf(origin) !== -1){
-            //El origen del request esta permitid
-
-            callback(null, true);
-        }else{
-            callback(new Error('No permitido por cors'));
+    origin: function (origin, callback) {
+        // Permite solicitudes sin origen (como Postman) durante el desarrollo
+        if (!origin) {
+            return callback(null, true);
         }
-    }
-}
+        if (dominiosPermitidos.indexOf(origin) !== -1) {
+            // El origen del request está permitido
+            callback(null, true);
+        } else {
+            callback(new Error('No permitido por CORS'));
+        }
+    },
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Agrega métodos permitidos
+    allowedHeaders: ['Content-Type', 'Authorization'], // Agrega encabezados permitidos
+};
 
 app.use(cors(corsOptions));
 app.use('/api/veterinarios', veterinarioRoutes);
